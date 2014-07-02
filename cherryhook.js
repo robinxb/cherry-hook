@@ -4,13 +4,54 @@ var quere = require('queue-async');
 var express = require('express');
 var bodyParser = require('body-parser');
 var task = require('queue-async')(1);
-var config = require('./config.json');
-
+var path = require('path');
 var app = express();
-
 app.use(bodyParser.json());
 
-var port = 8888;
+var config, listener;
+
+var _reload_config = function(){
+	if (typeof config !== 'undefined'){
+		var pwd = path.resolve() + 'config.js';
+		delete require.cache[pwd];
+	}
+	config = require('./config.json');
+	listener = {};
+	for (var itemid  in config.items){
+		var item = config.items[itemid];
+		for (var resid in item){
+			var res = item[resid];
+			var name = res.name,
+				branch = res.branch,
+				actions = res.actions;
+			if (typeof listener[name] === 'undefined'){
+				listener[name] = {};
+			}
+			for (var actionType in res.actions){
+				var action = res.actions[actionType];
+				var arrTask = config.scripts[res.actions[actionType]];
+				if (typeof arrTask === 'undefined'){
+					console.log('WARNING: task [' + res.actions[actionType] + '] in ' +
+							name + 'not found');
+					continue;
+				}
+				if (typeof listener[name][actionType] === 'undefined'){
+					listener[name][actionType] = {};
+				} 
+				if (typeof listener[name][actionType][branch] === 'undefined'){
+					listener[name][actionType][branch] = [];
+				} 
+				for (var i in arrTask){
+					listener[name][actionType][branch].push(arrTask[i]);
+				}
+			}
+		}
+	}
+}
+
+_reload_config();
+
+var port = config.port;
 app.listen(port);
 console.log('Listening on port ' + port);
 
@@ -19,5 +60,15 @@ app.post('*', function(req, res){
 		task.defer(function(req, res){
 				var eType = req.headers["x-github-event"];
 				var body = req.body;
-			}, req, res)
+				var branch = body.ref.split('/')[2];
+				var name = body.repository.name
+				var actions = (listener[name] && listener[name][eType] && listener[name][eType][branch])
+				if (typeof actions === 'undefined'){
+					console.log('INFO: ' + name + ':' + branch + ' got a ' + eType + ' trigger but no action fount.')
+					return;
+				}
+				for (var i in actions){
+					console.log('INFO: ' + name + ':' + branch + ' triggered script ' + actions[i]);
+				}
+			}, req, res);
 		})
