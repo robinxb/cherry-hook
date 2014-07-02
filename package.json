@@ -1,0 +1,22 @@
+{
+    "name": "cherry-hook",
+	"description": "An application which listens for GitHub webhook and start custom task",
+	"homepage": "http://github.com/robinxb/cherry-hook",
+	"author": {
+		"name": "Robin Zhang",
+		"url": "http://fancycoding.com/",
+		"email": "robinxiaobin@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:robinxb/cherry-hook.git"
+	},
+	"version": "0.1.0",
+	"dependencies": {
+		"queue-async": "1.0.x",
+		"express": "4.4.5",
+		"body-parser": "1.4.3"
+	},
+	"private": true
+}
+
