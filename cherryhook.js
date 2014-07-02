@@ -3,6 +3,8 @@
 var quere = require('queue-async');
 var express = require('express');
 var bodyParser = require('body-parser');
+var task = require('queue-async')(1);
+var config = require('./config.json');
 
 var app = express();
 
@@ -14,8 +16,8 @@ console.log('Listening on port ' + port);
 
 app.post('*', function(req, res){
 		res.send(202);
-		console.log('get a req');
-		for (var i in req.body){
-			console.log(i + ': ' + req.body[i]);
-		}
+		task.defer(function(req, res){
+				var eType = req.headers["x-github-event"];
+				var body = req.body;
+			}, req, res)
 		})

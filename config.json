@@ -1,0 +1,17 @@
+{
+	"port": 8888,
+	"scripts": {
+		"pull-task": ["./scripts/test.sh"]
+	},
+	"items": [
+		[
+			{
+				"name": "githooktest",
+				"branch": "master",
+				"action": {
+					"pull": "pull-task"
+				}
+			}
+		]
+	]
+}
