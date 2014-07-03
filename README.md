@@ -31,9 +31,15 @@ FAQ
 
 > When runing a shell, Error: spawn EACCES shows up ?
 
-This is because nodejs don't have the authority to run some shell command, such as `touch`.
+There could be two reasons.
 
-You can `cd` to the folder where you want to execute these commands in, and type `chmod -R 777 .`.
+One is because of the shell is not an executable file. Simply use `chmod +X path/to/the/shell`.
+
+Another is because nodejs don't have the permission to run some shell command, such as `touch`.
+
+You can check current user via command `$USER` in your scripts.
+
+If there's any future problem, notify me by [issues](https://github.com/robinxb/cherry-hook/issues).
 
 > Is the shell runs in synchronously?
 
