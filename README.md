@@ -45,26 +45,16 @@ If there's any future problem, notify me by [issues](https://github.com/robinxb/
 
 No, synchronously is not recommanded and due to the function `execFile` in nodejs, it's synchronous.
 
-For example
+> Are the HTTP requests get handled in queue?
 
-In config.json  **DO NOT use like this**
-
-```
-"push-task": ["./scripts/test.sh", "./scripts/test2.sh"]
-```
-
-In test.sh  **DO NOT use like this**
-
-```
-touch test2.sh
-echo 'test2 output' > test2.sh
-```
+Yes. And don't worry about too many requests coming at one time, cherry-hook run shells asynchronously.
 
 Roadmap
 ===========
 
 + Add hot-reload config.json.
 + Custom Payload URL in config.json
++ Custom the method of triggering hot-reload.
 
 License
 ===========
