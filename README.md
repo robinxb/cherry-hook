@@ -1,3 +1,6 @@
+[![Build
+Status](https://travis-ci.org/robinxb/cherry-hook.svg?branch=master)](https://travis-ci.org/robinxb/cherry-hook)
+
 cherry-hook
 ===========
 
