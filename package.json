@@ -17,6 +17,6 @@
 		"express": "4.4.5",
 		"body-parser": "1.4.3"
 	},
-	"private": true
+	"private": false
 }
 
