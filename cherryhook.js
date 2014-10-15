@@ -68,14 +68,12 @@ var _runCMDcb = function(error, stdout, stderr){
 
 app.post('*', function(req, res){
 		res.send(202);
-		console.log("recieve");
 		task.defer(function(req, res){
 				var eType = req.headers["x-github-event"];
 				var body = req.body;
 				var branch = body.ref.split('/')[2];
 				var name = body.repository.name;
 				var actions = (listener[name] && listener[name][eType] && listener[name][eType][branch]);
-				console.log(name);
 				if (typeof actions === 'undefined'){
 					console.log('INFO: ' + name + ':' + branch + ' got a ' + eType + ' trigger but no action fount.');
 					return;
